@@ -1,5 +1,8 @@
-﻿using ElectricalLearning.Services.IServices;
+﻿using ElectricalLearning.Services.Implementations;
+using ElectricalLearning.Services.IServices;
 using ElectricalLearning.Services.RequestModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElectricalLearning.Api.Controllers
@@ -51,5 +54,14 @@ namespace ElectricalLearning.Api.Controllers
             var result = await _accountService.DeleteAccount(id);
             return StatusCode(result.StatusCode, result);
         }
+
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] AccountRequest.Login request)
+        {
+            var result = await _accountService.Login(request);
+            return StatusCode(result.StatusCode, result);
+        }
     }
+
 }

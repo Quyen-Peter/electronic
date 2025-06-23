@@ -18,9 +18,9 @@ namespace ElectricalLearning.Repositories.Configurations
 
             List<Account> accounts = new List<Account>()
             {
-                 new Account { Id = 1, FullName = "Nguyễn Văn A", Email = "teacher@gmail.com", PasswordHash= "teacher123", Role = "Teacher", CreatedAt = DateTimeOffset.UtcNow},
-                new Account { Id = 2, FullName = "Trần Thị B", Email = "student@gmail.com", PasswordHash = "student123", Role = "Student", CreatedAt = DateTimeOffset.UtcNow },
-                new Account { Id = 3, FullName = "Lê Văn C", Email = "admin@gmail.com", PasswordHash = "adminr123", Role = "Admin", CreatedAt = DateTimeOffset.UtcNow }
+                 new Account { Id = 1, FullName = "Nguyễn Văn A", Email = "teacher@gmail.com", PasswordHash= BCrypt.Net.BCrypt.HashPassword("teacher123"), Role = "Teacher", CreatedAt = DateTimeOffset.UtcNow},
+                new Account { Id = 2, FullName = "Trần Thị B", Email = "student@gmail.com", PasswordHash = BCrypt.Net.BCrypt.HashPassword("student123"), Role = "Student", CreatedAt = DateTimeOffset.UtcNow },
+                new Account { Id = 3, FullName = "Lê Văn C", Email = "admin@gmail.com", PasswordHash = BCrypt.Net.BCrypt.HashPassword("adminr123"), Role = "Admin", CreatedAt = DateTimeOffset.UtcNow }
             };
 
             builder.HasData(accounts);

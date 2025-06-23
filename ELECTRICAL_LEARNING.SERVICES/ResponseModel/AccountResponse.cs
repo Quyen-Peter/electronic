@@ -8,7 +8,7 @@ namespace ElectricalLearning.Services.ResponseModel
 {
     public static class AccountResponse
     {
-        //DTO: data transfer object: che phur đi những thứ k cần thiết, chỉ lấy thứ cần thiết
+        //DTO: data transfer object: che phu đi những thứ k cần thiết, chỉ lấy thứ cần thiết
         public record GetAccountsModel(
         
             int Id,
@@ -20,6 +20,13 @@ namespace ElectricalLearning.Services.ResponseModel
             DateTimeOffset UpdatedAt
         );
 
+        public class Login
+        {
+            public string Token { get; set; } = default!;
+            public DateTime Expiration { get; set; }
+            public string Role { get; set; } = default!;
+            public string FullName { get; set; } = default!;
+        }
 
     }
 }

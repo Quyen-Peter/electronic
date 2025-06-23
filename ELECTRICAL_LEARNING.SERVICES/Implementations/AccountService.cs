@@ -11,16 +11,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ElectricalLearning.Services.RequestModel.AccountRequest;
+using static ElectricalLearning.Services.ResponseModel.AccountResponse;
 
 namespace ElectricalLearning.Services.Implementations
 {
     public class AccountService : IAccountService
     {
         private readonly IBaseRepository<Account, int> _accountRepository;
-
-        public AccountService(IBaseRepository<Account, int> accountRepository)
+        private readonly IJwtService _jwtService;
+        public AccountService(IBaseRepository<Account, int> accountRepository, IJwtService jwtService)
         {
             _accountRepository = accountRepository;
+            _jwtService = jwtService;
         }
 
         public async Task<Result> CreateAccount(AccountRequest.CreateAccountModel request)
@@ -106,6 +109,27 @@ namespace ElectricalLearning.Services.Implementations
             );
 
             return Result<AccountResponse.GetAccountsModel>.Success(result, "Get account successfully!");
+        }
+
+        public async Task<Result<AccountResponse.Login>> Login(AccountRequest.Login request)
+        {
+            var account = await _accountRepository
+                .GetAll()
+                .FirstOrDefaultAsync(x => x.Email == request.Email);
+            if (account == null || !BCrypt.Net.BCrypt.Verify(request.Password, account.PasswordHash))
+            {
+                return Result<AccountResponse.Login>.Failure("Email hoặc mật khẩu không đúng", 401);
+            }
+            var token = _jwtService.GenerateToken(account);
+            var response = new AccountResponse.Login
+            {
+                Token = token,
+                Expiration = DateTime.UtcNow.AddMinutes(60),
+                Role = account.Role,
+                FullName = account.FullName
+            };
+
+            return Result<AccountResponse.Login>.Success(response, "Đăng nhập thành công");
         }
 
         public async Task<Result> UpdateAccount(int id, AccountRequest.UpdateAccountModel request)

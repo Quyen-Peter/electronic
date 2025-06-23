@@ -46,5 +46,14 @@ namespace ElectricalLearning.Services.RequestModel
             [RegularExpression("^(Student|Teacher|Admin)$", ErrorMessage = "Vai trò phải là Student, Teacher hoặc Admin.")]
             public string? Role { get; set; }
         }
+
+        public class Login
+        {
+            [Required, EmailAddress]
+            public string Email { get; set; }
+
+            [Required]
+            public string Password { get; set; }
+        }
     }
 }
