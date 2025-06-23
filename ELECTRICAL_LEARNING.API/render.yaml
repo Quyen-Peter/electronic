@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: electrical-api
+    runtime: dotnet
+    branch: main
+    rootDir: ELECTRICAL_LEARNING.API
+    buildCommand: dotnet build
+    startCommand: dotnet ElectricalLearning.Api.dll
+    plan: free
